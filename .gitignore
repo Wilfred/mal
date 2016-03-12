@@ -10,6 +10,7 @@
 */node_modules
 *.o
 *.pyc
+*/.gdb_history
 */step0_repl
 */step1_read_print
 */step2_eval
@@ -103,3 +104,4 @@ tcl/mal.tcl
 vb/*.exe
 vb/*.dll
 vimscript/mal.vim
+x86_64_asm/a.out
