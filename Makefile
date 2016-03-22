@@ -188,7 +188,7 @@ swift3_STEP_TO_PROG =  swift3/$($(1))
 tcl_STEP_TO_PROG =     tcl/$($(1)).tcl
 vb_STEP_TO_PROG =      vb/$($(1)).exe
 vimscript_STEP_TO_PROG = vimscript/$($(1)).vim
-x64_STEP_TO_PROG = x64/$($(1))
+x64_STEP_TO_PROG =     x64/$($(1))
 guile_STEP_TO_PROG =   guile/$($(1)).scm
 
 
