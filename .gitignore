@@ -104,4 +104,4 @@ tcl/mal.tcl
 vb/*.exe
 vb/*.dll
 vimscript/mal.vim
-x86_64_asm/a.out
+x64/a.out
