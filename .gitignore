@@ -1,5 +1,6 @@
 .bash_history
 .cache
+.gdb_history
 .mal-history
 .crystal
 .lein
