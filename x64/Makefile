@@ -1,5 +1,5 @@
 CC=gcc
-CFLAGS=-g -lreadline -lpcre
+CFLAGS=-Wall -Wextra -g -lreadline -lpcre
 
 
 SOURCES = $(wildcard *.s)
