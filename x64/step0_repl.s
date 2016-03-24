@@ -21,23 +21,22 @@ rep:
 
         mov     %rax, %rdi
         call    PRINT
+        ret
 
 main:
-        push    %rbp
-        mov     %rsp, %rbp
 readloop:
         ## call readline(message);
         mov     $message, %rdi
         call    readline
-
-        mov     %rax, %rdi
-        call    READ
 
         ## on EOF (e.g. pressing Ctrl-D), readline returns NULL.
         ## Terminate when that happens.
         cmpq    $0, %rax
         je      end
         
+        mov     %rax, %rdi
+        call rep
+
         ## We need to clean up the string allocated by readline.
         mov     %rax, %rdi
         call    free
