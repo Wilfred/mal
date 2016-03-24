@@ -1,5 +1,14 @@
 CC=gcc
 CFLAGS=-g -lreadline -lpcre
 
-step0_repl: step0_repl.s
+
+SOURCES = $(wildcard *.s)
+TARGETS = $(SOURCES:.s=)
+
+all: $(TARGETS)
+
+%: %.s
 	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	rm -f $(TARGETS)
