@@ -33,12 +33,21 @@ readloop:
         ## Terminate when that happens.
         cmpq    $0, %rax
         je      end
-        
+
+        ## save a copy of the string from readline in a callee-saved
+        ## register.
+        mov     %rax, %rbx
+
+        ## rep(user_input_line)
         mov     %rax, %rdi
         call rep
 
-        ## We need to clean up the string allocated by readline.
+        ## println(rep(user_input_line))
         mov     %rax, %rdi
+        call    puts
+
+        ## We need to clean up the string allocated by readline.
+        mov     %rbx, %rdi
         call    free
 
         jmp     readloop
