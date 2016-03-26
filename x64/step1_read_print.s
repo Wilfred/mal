@@ -60,7 +60,7 @@ rep:
         ret
 
 main:
-readloop:
+.readloop:
         ## call readline(message);
         mov     $message, %rdi
         call    readline
@@ -68,7 +68,7 @@ readloop:
         ## on EOF (e.g. pressing Ctrl-D), readline returns NULL.
         ## Terminate when that happens.
         cmpq    $0, %rax
-        je      end
+        je      .end
 
         ## save a copy of the string from readline in a callee-saved
         ## register.
@@ -88,9 +88,9 @@ readloop:
 
         call    lex
 
-        jmp     readloop
+        jmp     .readloop
 
-end:
+.end:
         mov     $emptystr, %rdi
         call    puts
         ret
