@@ -100,5 +100,3 @@ emptystr:
         .asciz ""
 token_pattern:
         .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
-malloced:
-        .asciz "called malloc"
