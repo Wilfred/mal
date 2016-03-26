@@ -22,6 +22,20 @@ lex:
         
         call    pcre_compile
 
+        mov     %rax, %r14
+
+        mov     %r12, %rdi
+        call    free
+
+        mov     %r13, %rdi
+        call    free
+
+        mov     %r14, %rdi
+        ## pcre_free has type
+        ## void (*pcre_free)(void *);
+        ## so we need to dereference it when calling.
+        call    *pcre_free
+
         ret
 READ:
         mov     %rdi, %rax
