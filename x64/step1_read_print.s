@@ -14,7 +14,7 @@ lex:
         mov     %rax, %r13
 
         ## pcre_compile(pattern, 0, &error, &offset, NULL)
-        mov     $token_pattern, %rdi
+        mov     $.token_pattern, %rdi
         mov     $0, %rsi
         mov     %r12, %rdx
         mov     %r13, %rcx
@@ -52,7 +52,7 @@ rep:
         call    READ
 
         mov     %rax, %rdi
-        mov     $emptystr, %rsi
+        mov     $.emptystr, %rsi
         call    EVAL
 
         mov     %rax, %rdi
@@ -62,7 +62,7 @@ rep:
 main:
 .readloop:
         ## call readline(message);
-        mov     $message, %rdi
+        mov     $.message, %rdi
         call    readline
 
         ## on EOF (e.g. pressing Ctrl-D), readline returns NULL.
@@ -91,12 +91,12 @@ main:
         jmp     .readloop
 
 .end:
-        mov     $emptystr, %rdi
+        mov     $.emptystr, %rdi
         call    puts
         ret
-message:
+.message:
         .asciz "user> "            # asciz puts a 0 byte at the end
-emptystr:
+.emptystr:
         .asciz ""
-token_pattern:
+.token_pattern:
         .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
