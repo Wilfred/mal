@@ -37,6 +37,32 @@ lex:
         call    *pcre_free
 
         ret
+
+make_array:
+        ## g_array_new(false, false, sizeof(char*))
+        mov     $0, %rdi
+        mov     $0, %rsi
+        mov     $8, %rdx
+        call    g_array_new
+
+        ## we need a pointer to the string we want to push.
+        ## g_array_append_vals(arr, &str, 1);
+        sub     $8, %rsp
+        mov     %rax, %rdi
+        movq    $.message, (%rsp) # arbitrary string
+        lea     (%rsp), %rsi      # address of $.message
+        mov     $1, %rdx
+        call    g_array_append_vals
+        add     $8, %rsp
+
+        ## printf(lenmessage, arr->new);
+        mov     $.lenmessage, %rdi
+        mov     8(%rax), %rsi
+        mov     $0, %rax
+        call    printf
+
+        ret
+        
 READ:
         mov     %rdi, %rax
         ret
@@ -88,6 +114,8 @@ main:
 
         call    lex
 
+        call    make_array
+
         jmp     .readloop
 
 .end:
@@ -100,3 +128,5 @@ main:
         .asciz ""
 .token_pattern:
         .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
+.lenmessage:
+        .asciz "array length: %d\n"
