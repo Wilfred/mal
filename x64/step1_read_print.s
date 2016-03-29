@@ -39,11 +39,7 @@ lex:
         ret
 
 make_array:
-        ## g_array_new(false, false, sizeof(char*))
-        mov     $0, %rdi
-        mov     $0, %rsi
-        mov     $8, %rdx
-        call    g_array_new
+        call    g_ptr_array_new
 
         ## we need a pointer to the string we want to push.
         ## g_array_append_vals(arr, &str, 1);
