@@ -51,7 +51,7 @@ make_array:
         call    g_array_append_vals
         add     $8, %rsp
 
-        ## printf(lenmessage, arr->new);
+        ## printf(lenmessage, arr->len);
         mov     $.lenmessage, %rdi
         mov     8(%rax), %rsi
         mov     $0, %rax
