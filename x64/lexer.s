@@ -55,4 +55,8 @@ make_array:
         mov     $0, %rax
         call    printf
 
+        mov     %r12, %rdi
+        mov     $1, %rsi
+        call    g_ptr_array_free
+
         ret
