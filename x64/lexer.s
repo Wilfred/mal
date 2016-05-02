@@ -53,12 +53,32 @@ compile_lex_pattern:
 ## Print the length of the string passed in by the user.
 lex:
         push    %r12
+        push    %r13
+        push    %r14
 
-        ## len = strlen(user_string)
+        ## %r12 = user_string
         mov     %rax, %r12
+
+        ## %r14 len = strlen(user_string)
         mov     %rax, %rdi
         call    strlen
+        mov     %rax, %r14
 
+        ## i = 0
+        mov     $0, %r13
+.lex_loop:
+        ## i == len
+        cmp     %r13, %r14
+        je      .lex_loop_end
+
+        mov     $.countmessage, %rdi
+        mov     %r13, %rsi
+        mov     $0, %rax
+        call    printf
+        add     $1, %r13
+        jmp     .lex_loop
+        
+.lex_loop_end:
         call    compile_lex_pattern
 
         mov     %rax, %rdi
@@ -67,6 +87,8 @@ lex:
         ## so we need to dereference it when calling.
         call    *pcre_free
 
+        pop     %r14
+        pop     %r13
         pop     %r12
 
         ret
@@ -103,3 +125,4 @@ make_array:
         .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
 .lenmessage:
         .asciz "array length: %d\n"
+.countmessage: .asciz "i: %d\n"
