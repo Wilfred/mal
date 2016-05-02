@@ -40,20 +40,21 @@ lex:
 
 make_array:
         call    g_ptr_array_new
+        mov     %rax, %r12
 
-        ## we need a pointer to the string we want to push.
-        ## g_array_append_vals(arr, &str, 1);
-        sub     $8, %rsp
+        ## g_ptr_array_add(arr, str);
         mov     %rax, %rdi
-        movq    $.message, (%rsp) # arbitrary string
-        lea     (%rsp), %rsi      # address of $.message
-        mov     $1, %rdx
-        call    g_array_append_vals
-        add     $8, %rsp
+        movq    $.message, %rsi # arbitrary string
+        call    g_ptr_array_add
+
+        ## g_ptr_array_add(arr, str);
+        mov     %r12, %rdi
+        movq    $.message, %rsi # arbitrary string
+        call    g_ptr_array_add
 
         ## printf(lenmessage, arr->len);
         mov     $.lenmessage, %rdi
-        mov     8(%rax), %rsi
+        mov     8(%r12), %rsi
         mov     $0, %rax
         call    printf
 
