@@ -59,12 +59,6 @@ lex:
         mov     %rax, %rdi
         call    strlen
 
-        ## printf("length of string: %d\n", len);
-        mov     $.dummy, %rdi
-        mov     %rax, %rsi
-        mov     $0, %rax
-        call printf
-        
         call    compile_lex_pattern
 
         mov     %rax, %rdi
@@ -103,8 +97,6 @@ make_array:
 
         ret
 
-.dummy:
-        .asciz "len of string: %d\n"
 .bad_pattern_message:
         .asciz "pcre_compile failed!"
 .token_pattern:
