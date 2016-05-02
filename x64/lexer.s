@@ -21,10 +21,12 @@ compile_lex_pattern:
         mov     %r13, %rcx
         mov     $0, %r8
 
+        call    pcre_compile
+
+        ##  sanity check
         cmpq    $0, %rax
         je      .bad_pattern
         
-        call    pcre_compile
         ret
 .bad_pattern:
         mov     $.bad_pattern_message, %rdi
