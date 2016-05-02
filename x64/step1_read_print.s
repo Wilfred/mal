@@ -68,5 +68,3 @@ main:
         .asciz "user> "            # asciz puts a 0 byte at the end
 .emptystr:
         .asciz ""
-.lenmessage:
-        .asciz "array length: %d\n"

@@ -5,9 +5,6 @@ compile_lex_pattern:
         push    %r13
         push    %r14
         
-        mov     $.dummy, %rdi
-        call    puts
-        
         ## allocate a pointer for pcre_compile to write its error
         ## messages to.
         mov     $8, %rdi
@@ -52,8 +49,22 @@ compile_lex_pattern:
         mov     $.bad_pattern_message, %rdi
         call    puts
         ud2                      # boom!
-        
+
+## Print the length of the string passed in by the user.
 lex:
+        push    %r12
+
+        ## len = strlen(user_string)
+        mov     %rax, %r12
+        mov     %rax, %rdi
+        call    strlen
+
+        ## printf("length of string: %d\n", len);
+        mov     $.dummy, %rdi
+        mov     %rax, %rsi
+        mov     $0, %rax
+        call printf
+        
         call    compile_lex_pattern
 
         mov     %rax, %rdi
@@ -61,6 +72,8 @@ lex:
         ## void (*pcre_free)(void *);
         ## so we need to dereference it when calling.
         call    *pcre_free
+
+        pop     %r12
 
         ret
 
@@ -91,8 +104,10 @@ make_array:
         ret
 
 .dummy:
-        .asciz "in compile_lex_pattern"
+        .asciz "len of string: %d\n"
 .bad_pattern_message:
         .asciz "pcre_compile failed!"
 .token_pattern:
         .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
+.lenmessage:
+        .asciz "array length: %d\n"
