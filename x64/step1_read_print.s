@@ -40,8 +40,12 @@ main:
         ## register.
         mov     %rax, %rbx
 
-        ## rep(user_input_line)
+        ## lex(user_input_line)
         mov     %rax, %rdi
+        call    lex
+
+        ## rep(user_input_line)
+        mov     %rbx, %rdi
         call rep
 
         ## println(rep(user_input_line))
@@ -51,8 +55,6 @@ main:
         ## We need to clean up the string allocated by readline.
         mov     %rbx, %rdi
         call    free
-
-        call    lex
 
         call    make_array
 
