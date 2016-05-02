@@ -107,16 +107,57 @@ make_array:
         movq    $.message, %rsi # arbitrary string
         call    g_ptr_array_add
 
-        ## printf(lenmessage, arr->len);
-        mov     $.lenmessage, %rdi
-        mov     8(%r12), %rsi
-        mov     $0, %rax
-        call    printf
+        ## g_ptr_array_add(arr, str);
+        mov     %r12, %rdi
+        movq    $.message, %rsi # arbitrary string
+        call    g_ptr_array_add
+
+        ## g_ptr_array_add(arr, str);
+        mov     %r12, %rdi
+        movq    $.message, %rsi # arbitrary string
+        call    g_ptr_array_add
+
+        ## g_ptr_array_add(arr, str);
+        mov     %r12, %rdi
+        movq    $.message, %rsi # arbitrary string
+        call    g_ptr_array_add
+
+        mov %r12, %rdi
+        call print_str_array
 
         mov     %r12, %rdi
         mov     $1, %rsi
         call    g_ptr_array_free
 
+        ret
+
+## Given a GPtrArray of strings, print each item.
+print_str_array:
+        push %r12
+        push %r13
+
+        ## %r12 = array
+        mov %rdi, %r12
+        ## %r13 i = 0
+        mov $0, %r13
+.print_loop:
+        ## i == array->len
+        cmp %r13, 8(%r12)
+        je .print_loop_end
+
+        mov $.print_loop_message, %rdi
+        mov %r13, %rsi
+        mov $0, %rax
+        call printf
+
+        add $1, %r13
+        jmp .print_loop
+        
+.print_loop_end:
+
+        pop %r13
+        pop %r12
+        
         ret
 
 .bad_pattern_message:
@@ -126,3 +167,4 @@ make_array:
 .lenmessage:
         .asciz "array length: %d\n"
 .countmessage: .asciz "i: %d\n"
+.print_loop_message: .asciz "%d: todo\n"
