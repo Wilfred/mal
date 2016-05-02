@@ -66,7 +66,5 @@ main:
         .asciz "user> "            # asciz puts a 0 byte at the end
 .emptystr:
         .asciz ""
-.token_pattern:
-        .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
 .lenmessage:
         .asciz "array length: %d\n"

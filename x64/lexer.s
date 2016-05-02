@@ -80,3 +80,5 @@ make_array:
         .asciz "in compile_lex_pattern"
 .bad_pattern_message:
         .asciz "pcre_compile failed!"
+.token_pattern:
+        .asciz 	"[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^\\s\\[\\]{}('\"`,;)]*)"
