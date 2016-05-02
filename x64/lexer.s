@@ -1,5 +1,10 @@
 ## Return a stack-allocated pcre struct that matches mal lexemes.
 compile_lex_pattern:
+        ## we use these registers, so store their old values.
+        push    %r12
+        push    %r13
+        push    %r14
+        
         mov     $.dummy, %rdi
         call    puts
         
@@ -22,11 +27,26 @@ compile_lex_pattern:
         mov     $0, %r8
 
         call    pcre_compile
+        mov     %rax, %r14
 
         ##  sanity check
         cmpq    $0, %rax
         je      .bad_pattern
-        
+
+        ## free the pointers we allocated
+        mov     %r12, %rdi
+        call    free
+
+        mov     %r13, %rdi
+        call    free
+
+        mov     %r14, %rax
+
+        ## restore old r12 and r13
+        pop     %r14
+        pop     %r13
+        pop     %r12
+
         ret
 .bad_pattern:
         mov     $.bad_pattern_message, %rdi
@@ -36,15 +56,7 @@ compile_lex_pattern:
 lex:
         call    compile_lex_pattern
 
-        mov     %rax, %r14
-
-        mov     %r12, %rdi
-        call    free
-
-        mov     %r13, %rdi
-        call    free
-
-        mov     %r14, %rdi
+        mov     %rax, %rdi
         ## pcre_free has type
         ## void (*pcre_free)(void *);
         ## so we need to dereference it when calling.
