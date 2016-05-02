@@ -1,23 +1,38 @@
-lex:
+## Return a stack-allocated pcre struct that matches mal lexemes.
+compile_lex_pattern:
+        mov     $.dummy, %rdi
+        call    puts
+        
         ## allocate a pointer for pcre_compile to write its error
         ## messages to.
         mov     $8, %rdi
         call    malloc
         mov     %rax, %r12      # r12 is callee saved.
 
-        ## allocate another pointer for the offset.
+        ## allocate another pointer for the erroffset.
         mov     $8, %rdi
         call    malloc
         mov     %rax, %r13
 
-        ## pcre_compile(pattern, 0, &error, &offset, NULL)
+        ## pcre_compile(pattern, 0, &error, &erroffset, NULL)
         mov     $.token_pattern, %rdi
         mov     $0, %rsi
         mov     %r12, %rdx
         mov     %r13, %rcx
         mov     $0, %r8
+
+        cmpq    $0, %rax
+        je      .bad_pattern
         
         call    pcre_compile
+        ret
+.bad_pattern:
+        mov     $.bad_pattern_message, %rdi
+        call    puts
+        ud2                      # boom!
+        
+lex:
+        call    compile_lex_pattern
 
         mov     %rax, %r14
 
@@ -60,3 +75,8 @@ make_array:
         call    g_ptr_array_free
 
         ret
+
+.dummy:
+        .asciz "in compile_lex_pattern"
+.bad_pattern_message:
+        .asciz "pcre_compile failed!"

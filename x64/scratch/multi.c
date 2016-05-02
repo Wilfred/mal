@@ -1,4 +1,4 @@
-// -*- firestarter: (compile "clang -Wall -Wextra -lpcre multi.c -o multi") -*-
+// -*- firestarter: (compile "clang -Wall -Wextra -g -lpcre multi.c -o multi") -*-
 
 #include <stdio.h>
 #include <string.h>
@@ -7,7 +7,8 @@
 void print_matches(char *str) {
     const char *error;
     int erroffset;
-    int ovector[100];
+    // TODO: what's the right size here? Using 4 segfaults.
+    int ovector[10];
 
     char *pattern =
         "[\\s,]*(~@|[\\[\\]{}()'`~^@]|\"(?:\\\\.|[^\\\\\"])*\"|;.*|[^"
